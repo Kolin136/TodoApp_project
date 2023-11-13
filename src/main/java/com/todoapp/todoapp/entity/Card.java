@@ -43,7 +43,7 @@ public class Card extends Timestamped {
     public Card(CardRequestDto requestDto) {
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
-        this.finish = 0;
+        this.finish = 0;   // Db에서는 boolean지원 안하고 숫자 0,1로 true,false 구분 (0은 false)
 
     }
 

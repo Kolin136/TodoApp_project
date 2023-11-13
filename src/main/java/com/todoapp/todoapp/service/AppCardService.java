@@ -14,7 +14,7 @@ import java.util.List;
 @Transactional
 @Service
 @RequiredArgsConstructor
-public class TodoAppService {
+public class AppCardService {
 
     private final TodoAppRepository todoAppRepository;
 
@@ -58,4 +58,11 @@ public class TodoAppService {
     }
 
 
+    public Integer finishCheck(int checkNum, Long id) {
+        Card card = findCard(id);
+        card.setFinish(1);
+
+
+        return checkNum;
+    }
 }
