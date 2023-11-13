@@ -1,6 +1,6 @@
 package com.todoapp.todoapp.entity;
 
-import com.todoapp.todoapp.dto.CardRequestDto;
+import com.todoapp.todoapp.dto.card.CardRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

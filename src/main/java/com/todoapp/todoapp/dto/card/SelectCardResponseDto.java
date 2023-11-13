@@ -1,4 +1,4 @@
-package com.todoapp.todoapp.dto;
+package com.todoapp.todoapp.dto.card;
 
 import com.todoapp.todoapp.entity.Card;
 import lombok.Getter;
@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class CardResponseDto {
+public class SelectCardResponseDto {
 
     private Long id;
     private String name;
@@ -14,7 +14,7 @@ public class CardResponseDto {
     private String contents;
     private LocalDateTime createAt;
 
-    public CardResponseDto(Card card) {  //name은 나중 로그인 구현후 토큰을 통해서
+    public SelectCardResponseDto(Card card) {  //name은 나중 로그인 구현후 토큰을 통해서
         this.id = card.getId();
         this.title = card.getTitle();
         this.contents = card.getContents();

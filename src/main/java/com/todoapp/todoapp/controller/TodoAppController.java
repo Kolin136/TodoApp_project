@@ -1,7 +1,8 @@
 package com.todoapp.todoapp.controller;
 
-import com.todoapp.todoapp.dto.CardRequestDto;
-import com.todoapp.todoapp.dto.CardResponseDto;
+import com.todoapp.todoapp.dto.card.AllCardResponseDto;
+import com.todoapp.todoapp.dto.card.CardRequestDto;
+import com.todoapp.todoapp.dto.card.SelectCardResponseDto;
 import com.todoapp.todoapp.service.TodoAppService;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,22 +20,22 @@ public class TodoAppController {
 
 
     @PostMapping("appcard")
-    public CardResponseDto createCard(@RequestBody CardRequestDto requestDto){
+    public SelectCardResponseDto createCard(@RequestBody CardRequestDto requestDto){
         return todoAppService.createCard(requestDto);
     }
 
     @GetMapping("/appcard/{id}")
-    public CardResponseDto getIdCard(@PathVariable Long id){
+    public SelectCardResponseDto getIdCard(@PathVariable Long id){
         return todoAppService.getIdCard(id);
     }
 
     @GetMapping("/appcard")
-    public List<CardResponseDto> getCards(){
+    public List<AllCardResponseDto> getCards(){
         return todoAppService.getCards();
     }
 
     @PutMapping("/appcard/{id}")
-    public CardResponseDto updateCard(@PathVariable Long id, @RequestBody CardRequestDto requestDto ){
+    public SelectCardResponseDto updateCard(@PathVariable Long id, @RequestBody CardRequestDto requestDto ){
         return todoAppService.updateCard(id,requestDto);
     }
 
