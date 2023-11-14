@@ -4,7 +4,7 @@ import com.todoapp.todoapp.dto.card.AllCardResponseDto;
 import com.todoapp.todoapp.dto.card.CardRequestDto;
 import com.todoapp.todoapp.dto.card.SelectCardResponseDto;
 import com.todoapp.todoapp.entity.Card;
-import com.todoapp.todoapp.repository.TodoAppRepository;
+import com.todoapp.todoapp.repository.CardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,10 +16,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AppCardService {
 
-    private final TodoAppRepository todoAppRepository;
+    private final CardRepository cardRepository;
 
     public SelectCardResponseDto createCard(CardRequestDto requestDto) {
-        SelectCardResponseDto cardResponseDto = new SelectCardResponseDto(new Card(requestDto));
+        Card card = new Card(requestDto);
+
+        SelectCardResponseDto cardResponseDto = new SelectCardResponseDto(cardRepository.save(card));
 
         return cardResponseDto;
     }
@@ -34,7 +36,7 @@ public class AppCardService {
 
     @Transactional(readOnly = true)
     public List<AllCardResponseDto> getCards() {
-        return todoAppRepository.findAllByOrderByCreateAtDesc()
+        return cardRepository.findAllByOrderByCreateAtDesc()
                 .stream().map(AllCardResponseDto::new).toList();
     }
 
@@ -48,15 +50,8 @@ public class AppCardService {
 
     public void deleteCard(Long id) {
         Card card = findCard(id);
-        todoAppRepository.delete(card);
+        cardRepository.delete(card);
     }
-
-    private Card findCard(Long id) {
-        return todoAppRepository.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("해당 카드는 없습니다")
-        );
-    }
-
 
     public Integer finishCheck(int checkNum, Long id) {
         Card card = findCard(id);
@@ -65,4 +60,12 @@ public class AppCardService {
 
         return checkNum;
     }
+
+    private Card findCard(Long id) {
+        return cardRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("해당 카드는 없습니다")
+        );
+    }
+
+
 }
