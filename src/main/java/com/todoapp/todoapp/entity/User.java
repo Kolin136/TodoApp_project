@@ -25,8 +25,6 @@ public class User  {
     @Column(nullable = false, length = 15)
     private String password;
 
-    @Column(nullable = false, length = 30)
-    private String email;
 
     //유저랑 게시글 관계-> 유저는 게시글의 관계에서 주인이 아니고(1)
     @OneToMany(mappedBy = "user")
@@ -39,11 +37,11 @@ public class User  {
 
 
 
-    public User(String username, String password, String email) {
+    public User(String username, String password) {
 
         this.username = username;
         this.password = password;
-        this.email = email;
+
 
     }
 

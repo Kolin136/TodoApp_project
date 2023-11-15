@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 public class SelectCardResponseDto {
 
     private Long id;
-    private String name;
+    private String username;
     private String title;
     private String contents;
     private LocalDateTime createAt;

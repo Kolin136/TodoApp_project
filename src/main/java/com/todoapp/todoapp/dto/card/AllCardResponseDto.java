@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Getter
 public class AllCardResponseDto {
     private Long id;
-    private String name;
+    private String username;
     private String title;
     private LocalDateTime createAt;
     private Integer finish;
