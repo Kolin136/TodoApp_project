@@ -8,10 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,7 +24,7 @@ public class UserController {
     }
 
     //지금은 리턴쪽 보면 서로 반환이 달라서 ? 맞지만 정해져있을땐 명확하게 무엇을 리턴할건지 ResponseEntity<> 괄호안에 적는게 좋다
-    @PostMapping("/signup")
+    @PostMapping("/user/signup")
     public ResponseEntity<?>  signup( @RequestBody @Valid SignupRequestDto requestDto, BindingResult bindingResult) {
 
 

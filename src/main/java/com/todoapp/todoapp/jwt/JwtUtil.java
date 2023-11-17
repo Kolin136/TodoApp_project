@@ -20,7 +20,7 @@ import java.util.Date;
 public class JwtUtil {
 
     // Header의 KEY값
-    private static final String AUTHORIZATION_HEADER = "Authorization";
+    public static final String AUTHORIZATION_HEADER = "Authorization";
 
     //어떤값앞에 Bearer이라 붙어 있으면 해당하는 그 값은 토큰이라 알려주는거다. VALUE값인 토큰 앞에 Bearer붙여주는데 한칸뛴다.(공백)
     public static final String BEARER_PREFIX = "Bearer ";
@@ -67,7 +67,7 @@ public class JwtUtil {
     }
 
     //토큰 유효성 검사
-    public boolean vaildateToken(String token){
+    public boolean validateToken(String token){
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
