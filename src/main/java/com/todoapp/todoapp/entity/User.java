@@ -40,9 +40,10 @@ public class User  {
 
         this.username = username;
         this.password = password;
-
-
     }
 
+    public void cardListAdd(Card card){
+        this.cardList.add(card);
+    }
 
 }

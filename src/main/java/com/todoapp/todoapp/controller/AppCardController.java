@@ -1,10 +1,13 @@
 package com.todoapp.todoapp.controller;
 
+import com.todoapp.todoapp.customException.uqualsException;
 import com.todoapp.todoapp.dto.card.AllCardResponseDto;
 import com.todoapp.todoapp.dto.card.CardRequestDto;
 import com.todoapp.todoapp.dto.card.SelectCardResponseDto;
 import com.todoapp.todoapp.security.UserDetailsImpl;
 import com.todoapp.todoapp.service.AppCardService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +23,7 @@ public class AppCardController {
         this.appCardService = appCardService;
     }
 
-    //회원 정보를 넘겨줘야하니 인증객체AuthenticationPrincipal에 들어있는 UserDetailsImpl 가져오면된다
+    //회원 정보를 넘겨줘야하니 인증객체 AuthenticationPrincipal에 들어있는 UserDetailsImpl 가져오면된다
     @PostMapping("appcard")
     public SelectCardResponseDto createCard(@RequestBody CardRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return appCardService.createCard(requestDto,userDetails.getUser());
@@ -37,8 +40,18 @@ public class AppCardController {
     }
 
     @PutMapping("/appcard/{id}")
-    public SelectCardResponseDto updateCard(@PathVariable Long id, @RequestBody CardRequestDto requestDto ){
-        return appCardService.updateCard(id,requestDto);
+    public ResponseEntity<?> updateCard(@PathVariable Long id, @RequestBody CardRequestDto requestDto , @AuthenticationPrincipal UserDetailsImpl userDetails) throws uqualsException {
+        try {
+            SelectCardResponseDto selectCardResponseDto = appCardService.updateCard(id,requestDto,userDetails.getUser());
+            return ResponseEntity.ok(selectCardResponseDto);
+
+        } catch (uqualsException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("다른 유저의 게시글 입니다.");
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 게시글은 존재하지 않습니다.");
+        }
+
+
     }
 
     @DeleteMapping("/appcard/{id}")
@@ -52,6 +65,5 @@ public class AppCardController {
 
     }
 
-    //깃허브 체크1
 
 }

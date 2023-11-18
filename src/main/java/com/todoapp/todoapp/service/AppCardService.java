@@ -1,5 +1,6 @@
 package com.todoapp.todoapp.service;
 
+import com.todoapp.todoapp.customException.uqualsException;
 import com.todoapp.todoapp.dto.card.AllCardResponseDto;
 import com.todoapp.todoapp.dto.card.CardRequestDto;
 import com.todoapp.todoapp.dto.card.SelectCardResponseDto;
@@ -21,6 +22,7 @@ public class AppCardService {
 
     public SelectCardResponseDto createCard(CardRequestDto requestDto, User user) {
         Card card = new Card(requestDto, user);
+        user.cardListAdd(card);
 
         SelectCardResponseDto cardResponseDto = new SelectCardResponseDto(cardRepository.save(card), user.getUsername());
 
@@ -42,9 +44,13 @@ public class AppCardService {
                 .stream().map(AllCardResponseDto::new).toList();
     }
 
-    public SelectCardResponseDto updateCard(Long id, CardRequestDto requestDto) {
-
+    public SelectCardResponseDto updateCard(Long id, CardRequestDto requestDto, User user) throws uqualsException {
         Card card = findCard(id);
+
+        if (!card.getUser().getUsername().equals(user.getUsername())){
+            throw new uqualsException();
+        }
+
         card.update(requestDto);
 
         return new SelectCardResponseDto(card, card.getUser().getUsername());
