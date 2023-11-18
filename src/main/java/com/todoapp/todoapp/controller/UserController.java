@@ -27,14 +27,12 @@ public class UserController {
     @PostMapping("/user/signup")
     public ResponseEntity<?>  signup( @RequestBody @Valid SignupRequestDto requestDto, BindingResult bindingResult) {
 
-
         if (bindingResult.hasErrors()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getFieldErrors());
         }
 
         userService.signup(requestDto);
-
-        String message = "가입 성공";
+        String message = "회원가입 성공";
         //return ResponseEntity.status(HttpStatus.OK).body(message);  정답은 없지만 new 방식 아닐경우
         return new ResponseEntity<>(message, HttpStatus.OK);
     }

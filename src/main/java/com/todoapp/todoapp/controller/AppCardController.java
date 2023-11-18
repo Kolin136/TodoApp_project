@@ -3,7 +3,9 @@ package com.todoapp.todoapp.controller;
 import com.todoapp.todoapp.dto.card.AllCardResponseDto;
 import com.todoapp.todoapp.dto.card.CardRequestDto;
 import com.todoapp.todoapp.dto.card.SelectCardResponseDto;
+import com.todoapp.todoapp.security.UserDetailsImpl;
 import com.todoapp.todoapp.service.AppCardService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,10 +20,10 @@ public class AppCardController {
         this.appCardService = appCardService;
     }
 
-
+    //회원 정보를 넘겨줘야하니 인증객체AuthenticationPrincipal에 들어있는 UserDetailsImpl 가져오면된다
     @PostMapping("appcard")
-    public SelectCardResponseDto createCard(@RequestBody CardRequestDto requestDto){
-        return appCardService.createCard(requestDto);
+    public SelectCardResponseDto createCard(@RequestBody CardRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return appCardService.createCard(requestDto,userDetails.getUser());
     }
 
     @GetMapping("/appcard/{id}")
@@ -50,5 +52,6 @@ public class AppCardController {
 
     }
 
+    //깃허브 체크
 
 }

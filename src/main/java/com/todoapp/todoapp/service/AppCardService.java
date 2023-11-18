@@ -4,6 +4,7 @@ import com.todoapp.todoapp.dto.card.AllCardResponseDto;
 import com.todoapp.todoapp.dto.card.CardRequestDto;
 import com.todoapp.todoapp.dto.card.SelectCardResponseDto;
 import com.todoapp.todoapp.entity.Card;
+import com.todoapp.todoapp.entity.User;
 import com.todoapp.todoapp.repository.CardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,25 +19,26 @@ public class AppCardService {
 
     private final CardRepository cardRepository;
 
-    public SelectCardResponseDto createCard(CardRequestDto requestDto) {
-        Card card = new Card(requestDto);
+    public SelectCardResponseDto createCard(CardRequestDto requestDto, User user) {
+        Card card = new Card(requestDto, user);
 
-        SelectCardResponseDto cardResponseDto = new SelectCardResponseDto(cardRepository.save(card));
+        SelectCardResponseDto cardResponseDto = new SelectCardResponseDto(cardRepository.save(card), user.getUsername());
 
         return cardResponseDto;
     }
 
     @Transactional(readOnly = true)
     public SelectCardResponseDto getIdCard(Long id) {
+        Card card = findCard(id);
 
-        SelectCardResponseDto cardResponseDto = new SelectCardResponseDto(findCard(id));
+        SelectCardResponseDto cardResponseDto = new SelectCardResponseDto(card, card.getUser().getUsername());
 
         return cardResponseDto;
     }
 
     @Transactional(readOnly = true)
     public List<AllCardResponseDto> getCards() {
-        return cardRepository.findAllByOrderByCreateAtDesc()
+        return cardRepository.findAllByOrderByUserUsernameAscCreateAtDesc()
                 .stream().map(AllCardResponseDto::new).toList();
     }
 
@@ -45,7 +47,7 @@ public class AppCardService {
         Card card = findCard(id);
         card.update(requestDto);
 
-        return new SelectCardResponseDto(card);
+        return new SelectCardResponseDto(card, card.getUser().getUsername());
     }
 
     public void deleteCard(Long id) {

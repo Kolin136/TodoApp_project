@@ -10,7 +10,6 @@ import java.util.List;
 
 @Table(name = "users")
 @NoArgsConstructor
-@Setter
 @Getter
 @Entity
 public class User  {
@@ -22,7 +21,7 @@ public class User  {
     @Column(nullable = false, length = 10, unique = true)
     private String username;
 
-    @Column(nullable = false, length = 15)
+    @Column(nullable = false, length = 100)
     private String password;
 
 

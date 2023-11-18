@@ -16,6 +16,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 @Slf4j(topic = "JWT 검증 및 인가")
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
@@ -45,6 +46,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             //info.getSubject()는 인증 단계에서 토큰 생성할때 넣은 username 가져온다.
             try {
                 setAuthentication(info.getSubject());
+                log.info("인가 시작");
             } catch (Exception e) {
                 log.error(e.getMessage());
                 return;
@@ -61,6 +63,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         context.setAuthentication(authentication);
 
         SecurityContextHolder.setContext(context);
+        log.info("인가 성공");
     }
 
     // 인증 객체 생성
