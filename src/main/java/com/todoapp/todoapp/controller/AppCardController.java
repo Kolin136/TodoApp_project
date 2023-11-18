@@ -52,6 +52,6 @@ public class AppCardController {
 
     }
 
-    //깃허브 체크
+    //깃허브 체크1
 
 }
