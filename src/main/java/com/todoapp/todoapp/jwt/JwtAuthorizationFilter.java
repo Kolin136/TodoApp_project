@@ -35,30 +35,28 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         String tokenValue = jwtUtil.getJWtHeader(req);
 
-        if (StringUtils.hasText(tokenValue)) {
 
-            if (!jwtUtil.validateToken(tokenValue)) {
-                log.error("Token Error");
-                res.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 상태 보내기
-                res.setContentType("application/json");
-                res.setCharacterEncoding("utf-8");
-                PrintWriter writer = res.getWriter();
-                writer.println("토큰이 유효하지 않습니다.");
-                return;
-            }
-
-            Claims info = jwtUtil.getUserInfoFromToken(tokenValue);
-
-            //info.getSubject()는 인증 단계에서 토큰 생성할때 넣은 username 가져온다.
-            try {
-                setAuthentication(info.getSubject());
-                log.info("인가 시작");
-            } catch (Exception e) {
-                log.error(e.getMessage());
-
-                return;
-            }
+        if (!StringUtils.hasText(tokenValue) || !jwtUtil.validateToken(tokenValue)) {
+            log.error("Token Error");
+            res.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 상태 보내기
+            res.setContentType("application/json");
+            res.setCharacterEncoding("utf-8");
+            PrintWriter writer = res.getWriter();
+            writer.println("토큰이 유효하지 않습니다.");
+            return;
         }
+
+        Claims info = jwtUtil.getUserInfoFromToken(tokenValue);
+
+        //info.getSubject()는 인증 단계에서 토큰 생성할때 넣은 username 가져온다.
+        try {
+            setAuthentication(info.getSubject());
+            log.info("인가 시작");
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return;
+        }
+
 
         filterChain.doFilter(req, res);
     }
