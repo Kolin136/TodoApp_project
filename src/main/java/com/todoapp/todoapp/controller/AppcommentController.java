@@ -35,7 +35,6 @@ public class AppcommentController {
                                             @RequestParam ("commentid") Long commentId,
                                             @RequestBody CommentRequestDto requestDto,
                                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-
         try {
             CommentResponseDto commentResponseDto = appCommentService.updateComment(cardId,commentId ,requestDto, userDetails.getUser());
             return ResponseEntity.ok(commentResponseDto);
@@ -55,6 +54,5 @@ public class AppcommentController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
-
 
 }
