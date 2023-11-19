@@ -64,6 +64,6 @@
     - 로그인 시, 전달된 username과 password 중 맞지 않는 정보가 있다면 "회원을 찾을 수 없습니다."라는 에러메시지와 statusCode: 400을 Client에 반환하기
 
 # ERD
-![ERD](.images/ERD.PNG)
+![ERD](./images/ERD.PNG)
 # API
-![API](.images/api명세서.PNG)
+![API](./images/api명세서.png)
