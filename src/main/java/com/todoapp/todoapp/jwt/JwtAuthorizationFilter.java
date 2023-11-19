@@ -76,7 +76,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             writer.println("헤더에 토큰을 넣어주시고 로그인 하거나 로그인을 먼저 해주세요.");
 
         }
-        //로그인을 하려는 경우에는 토큰이 비어 있어도 아무 이상 없어야하는데 config에서 인증보다 인가를 먼저 처리하도록 해서 로그인 요청시에 문제다...
+        //로그인을 하려는 경우에는 토큰이 비어 있어도 아무 이상 없어야하는데 config에서 인증보다 인가를 먼저 처리하도록 해서 로그인 요청시에도 오류메세지 보내서 문제다...
 
         filterChain.doFilter(req, res);
     }

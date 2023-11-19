@@ -31,6 +31,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         // HttpServletRequest body데이터인 json형식
 
+        String tokenValue = jwtUtil.getJWtHeader(request);
+
+
+
         log.info("로그인 시작");
         try {
             LoginRequestDto requestDto = new ObjectMapper().readValue(request.getInputStream(), LoginRequestDto.class);

@@ -68,10 +68,12 @@ public class WebSecurityConfig {
                 authorizeHttpRequests
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // resources 접근 허용 설정
                         .requestMatchers("/todo/user/**").permitAll()
+
                         .anyRequest().authenticated() // 그 외 모든 요청 인증처리
         );
 
-        // 지금은 프론트없으니 없어도 될듯
+
+//         지금은 프론트없으니 없어도 될듯
 //        http.formLogin((formLogin) ->
 //                formLogin
 //                        .loginPage("/todo/user/login-page").permitAll()
