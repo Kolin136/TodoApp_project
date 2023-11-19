@@ -7,6 +7,7 @@ import com.todoapp.todoapp.dto.card.SelectCardResponseDto;
 import com.todoapp.todoapp.entity.Card;
 import com.todoapp.todoapp.entity.User;
 import com.todoapp.todoapp.repository.CardRepository;
+import com.todoapp.todoapp.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,17 +57,26 @@ public class AppCardService {
         return new SelectCardResponseDto(card, card.getUser().getUsername());
     }
 
-    public void deleteCard(Long id) {
+    public void deleteCard(Long id, User user) throws uqualsException{
         Card card = findCard(id);
+
+        if (!card.getUser().getUsername().equals(user.getUsername())){
+            throw new uqualsException();
+        }
+
         cardRepository.delete(card);
+
     }
 
-    public Integer finishCheck(int checkNum, Long id) {
+    public void finishCheck(int checkNum, Long id, User user) throws uqualsException{
         Card card = findCard(id);
+
+        if (!card.getUser().getUsername().equals(user.getUsername())){
+            throw new uqualsException();
+        }
+
         card.setFinish(1);
 
-
-        return checkNum;
     }
 
     private Card findCard(Long id) {

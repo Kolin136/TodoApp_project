@@ -25,51 +25,73 @@ public class AppCardController {
 
     //회원 정보를 넘겨줘야하니 인증객체 AuthenticationPrincipal에 들어있는 UserDetailsImpl 가져오면된다
     @PostMapping("appcard")
-    public SelectCardResponseDto createCard(@RequestBody CardRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return appCardService.createCard(requestDto,userDetails.getUser());
+    public ResponseEntity<SelectCardResponseDto> createCard(@RequestBody CardRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        SelectCardResponseDto selectCardResponseDto = appCardService.createCard(requestDto, userDetails.getUser());
+
+        return ResponseEntity.ok(selectCardResponseDto);
     }
 
+
     @GetMapping("/appcard/{id}")
-    public ResponseEntity<?> getIdCard(@PathVariable Long id){
+    public ResponseEntity<?> getIdCard(@PathVariable Long id) {
 
         try {
             SelectCardResponseDto selectCardResponseDto = appCardService.getIdCard(id);
             return ResponseEntity.ok(selectCardResponseDto);
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
+
     @GetMapping("/appcard")
-    public List<AllCardResponseDto> getCards(){
-        return appCardService.getCards();
+    public ResponseEntity<List<AllCardResponseDto>> getCards() {
+
+        List<AllCardResponseDto> allCardResponseDtoList = appCardService.getCards();
+
+        return ResponseEntity.ok(allCardResponseDtoList);
     }
 
+
     @PutMapping("/appcard/{id}")
-    public ResponseEntity<?> updateCard(@PathVariable Long id, @RequestBody CardRequestDto requestDto , @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<?> updateCard(@PathVariable Long id, @RequestBody CardRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         try {
-            SelectCardResponseDto selectCardResponseDto = appCardService.updateCard(id,requestDto,userDetails.getUser());
+            SelectCardResponseDto selectCardResponseDto = appCardService.updateCard(id, requestDto, userDetails.getUser());
             return ResponseEntity.ok(selectCardResponseDto);
 
         } catch (uqualsException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
-
-
     }
+
 
     @DeleteMapping("/appcard/{id}")
-    public void deleteCard(@PathVariable Long id){
-       appCardService.deleteCard(id);
+    public ResponseEntity<?> deleteCard(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        try {
+            appCardService.deleteCard(id,userDetails.getUser());
+            return ResponseEntity.ok().body(String.format("Pk%d번 앱카드 삭제 완료", id));
+        } catch (uqualsException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
+
 
     @GetMapping("/appcard/finish")
-    private Integer finishCheck(@RequestParam int checkNum,Long id){
-        return appCardService.finishCheck(checkNum,id);
-
+    private ResponseEntity<?>  finishCheck(@RequestParam int checkNum, Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        try {
+            appCardService.finishCheck(checkNum, id,userDetails.getUser());
+            return ResponseEntity.ok().body("앱카드 체크 처리 완료");
+        } catch (uqualsException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
-
 
 }

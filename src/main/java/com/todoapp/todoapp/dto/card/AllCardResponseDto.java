@@ -15,6 +15,7 @@ public class AllCardResponseDto {
 
     public AllCardResponseDto(Card card) {  //name은 나중 로그인 구현후 토큰을 통해서
         this.id = card.getId();
+        this.username = card.getUser().getUsername();
         this.title = card.getTitle();
         this.createAt = card.getCreateAt();
         this.finish = card.getFinish();
