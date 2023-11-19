@@ -64,9 +64,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
     @Override
-    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) {
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed)  throws IOException {
         log.info("로그인 실패");
-        response.setStatus(401);   //실패할경우 401상태 보낸다
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);   //실패할경우 401상태 보낸다
+        response.setContentType("application/json");
+        response.setCharacterEncoding("utf-8");
+        PrintWriter writer = response.getWriter();
+        writer.println("회원을 찾을 수 없습니다.");
     }
 
 

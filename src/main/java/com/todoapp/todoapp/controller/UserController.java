@@ -31,10 +31,15 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getFieldErrors());
         }
 
-        userService.signup(requestDto);
-        String message = "회원가입 성공";
-        //return ResponseEntity.status(HttpStatus.OK).body(message);  정답은 없지만 new 방식 아닐경우
-        return new ResponseEntity<>(message, HttpStatus.OK);
+        try {
+            userService.signup(requestDto);
+            String message = "회원가입 성공";
+            //return ResponseEntity.status(HttpStatus.OK).body(message);  정답은 없지만 new 방식 아닐경우
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("중복된 username 입니다.");
+        }
+
     }
 
 

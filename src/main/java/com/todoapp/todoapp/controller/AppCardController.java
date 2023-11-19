@@ -40,14 +40,14 @@ public class AppCardController {
     }
 
     @PutMapping("/appcard/{id}")
-    public ResponseEntity<?> updateCard(@PathVariable Long id, @RequestBody CardRequestDto requestDto , @AuthenticationPrincipal UserDetailsImpl userDetails) throws uqualsException {
+    public ResponseEntity<?> updateCard(@PathVariable Long id, @RequestBody CardRequestDto requestDto , @AuthenticationPrincipal UserDetailsImpl userDetails) {
         try {
             SelectCardResponseDto selectCardResponseDto = appCardService.updateCard(id,requestDto,userDetails.getUser());
             return ResponseEntity.ok(selectCardResponseDto);
 
         } catch (uqualsException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("다른 유저의 게시글 입니다.");
-        }catch (Exception e){
+        }catch (RuntimeException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 게시글은 존재하지 않습니다.");
         }
 

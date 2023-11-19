@@ -16,6 +16,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Arrays;
 
 @Slf4j(topic = "JWT 검증 및 인가")
@@ -38,6 +39,11 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
             if (!jwtUtil.validateToken(tokenValue)) {
                 log.error("Token Error");
+                res.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 상태 보내기
+                res.setContentType("application/json");
+                res.setCharacterEncoding("utf-8");
+                PrintWriter writer = res.getWriter();
+                writer.println("토큰이 유효하지 않습니다.");
                 return;
             }
 
@@ -49,6 +55,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 log.info("인가 시작");
             } catch (Exception e) {
                 log.error(e.getMessage());
+
                 return;
             }
         }
