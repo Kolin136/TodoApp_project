@@ -1,5 +1,6 @@
 package com.todoapp.todoapp.controller;
 
+import com.todoapp.todoapp.customException.uqualsException;
 import com.todoapp.todoapp.dto.comment.CommentRequestDto;
 import com.todoapp.todoapp.dto.comment.CommentResponseDto;
 import com.todoapp.todoapp.security.UserDetailsImpl;
@@ -44,8 +45,15 @@ public class AppcommentController {
     }
 
     @DeleteMapping("/appcomment/{id}")
-    public void deleteCard(@PathVariable Long id) {
-        appCommentService.deleteComment(id);
+    public ResponseEntity<?> deleteCard(@PathVariable Long id,@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        try {
+            appCommentService.deleteComment(id,userDetails.getUser());
+            return ResponseEntity.ok().body(String.format("Pk%d번 댓글 삭제 완료", id));
+        } catch (uqualsException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
 
