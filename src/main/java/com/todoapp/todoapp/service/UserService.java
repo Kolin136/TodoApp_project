@@ -26,7 +26,7 @@ public class UserService {
         Optional<User> checkUsername = userRepository.findByUsername(username);
         //isPresent()는 Optional메소드이고 현재 값이 존재하는지 안하는지 확인하는 메소드
         if(checkUsername.isPresent()){
-            throw new IllegalArgumentException("이미 존재하는 이름입니다.");
+            throw new IllegalArgumentException("중복된 username 입니다.");
         }
 
         User user = new User(username,password);
