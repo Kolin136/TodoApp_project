@@ -30,8 +30,8 @@ public class User  {
     private List<Card> cardList = new ArrayList<>();
 
     //유저랑 댓글의 관계-> 유저는 댓글과의 관계에서 주인이 아니고(1)
-    @OneToMany(mappedBy = "user")
-    private List<Comments> commentList = new ArrayList<>();
+    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
+    private List<Comments> commentsList = new ArrayList<>();
 
 
 
@@ -44,6 +44,10 @@ public class User  {
 
     public void cardListAdd(Card card){
         this.cardList.add(card);
+    }
+
+    public void commentsListAdd(Comments comments){
+        this.commentsList.add(comments);
     }
 
 }

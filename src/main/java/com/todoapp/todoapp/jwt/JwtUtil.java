@@ -26,7 +26,7 @@ public class JwtUtil {
     public static final String BEARER_PREFIX = "Bearer ";
 
     // 토큰 만료시간 10분
-    private final long TOKEN_TIME = 10 * 60 * 1000L;
+    private final long TOKEN_TIME = 60 * 60 * 1000L;
 
     @Value("${jwt.secret.key}") // application.properties 에서 설정한 시크릿키 가져오기
     private String secretKey;

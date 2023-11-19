@@ -2,7 +2,9 @@ package com.todoapp.todoapp.service;
 
 import com.todoapp.todoapp.dto.comment.CommentRequestDto;
 import com.todoapp.todoapp.dto.comment.CommentResponseDto;
+import com.todoapp.todoapp.entity.Card;
 import com.todoapp.todoapp.entity.Comments;
+import com.todoapp.todoapp.entity.User;
 import com.todoapp.todoapp.repository.CardRepository;
 import com.todoapp.todoapp.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,19 +16,41 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AppCommentService {
     private final CommentRepository commentRepository;
+    private final CardRepository cardRepository;
 
-    public CommentResponseDto createComment(CommentRequestDto requestDto) {
-        Comments comments = new Comments(requestDto);
+    public CommentResponseDto createComment(Long id, CommentRequestDto requestDto, User user) {
+        Card card = findCard(id);
+
+        Comments comments = new Comments(requestDto,card);
+        card.commentsListAdd(comments);
+        user.commentsListAdd(comments);
 
         CommentResponseDto commentResponseDto = new CommentResponseDto(commentRepository.save(comments));
 
         return commentResponseDto;
     }
 
-    public CommentResponseDto updateComment(Long id, CommentRequestDto requestDto) {
+    public CommentResponseDto updateComment(Long cardid, Long commentid, CommentRequestDto requestDto, User user) {
+        Card card = findCard(cardid);
 
-        Comments comments = findComment(id);
+        Comments comments = findComment(commentid);
         comments.update(requestDto);
+
+//        이렇게 댓글을 수정후 체크해보는데 카드입장에서는 바로 즉시 수정한게 반영되는데 유저입장도 수정된게 반영되긴하나 카드처럼 즉시는 안됩니다.
+//         (예시 출력결과 ↓) 영속성컨텍스트랑 관련 있는것같긴한데 정확히 무슨 이유인지 모르겠습니다...
+//        카드입장체크 Good다시수정2
+//        카드입장체크 Hi수정
+//        카드입장체크 oh수정
+//        유저입장체크 Good다시수정
+//        유저입장체크 Hi수정
+//        유저입장체크 oh수정
+
+//        for (Comments comments1 : card.getCommentsList()) {
+//            System.out.println("카드입장체크" + comments1.getComment());
+//        }
+//        for (Comments comments1 : user.getCommentsList()) {
+//            System.out.println("유저입장체크" + comments1.getComment());
+//        }
 
         return new CommentResponseDto(comments);
     }
@@ -44,6 +68,10 @@ public class AppCommentService {
         );
     }
 
-
+    private Card findCard(Long id) {
+        return cardRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("해당 앱카드는 없습니다")
+        );
+    }
 
 }

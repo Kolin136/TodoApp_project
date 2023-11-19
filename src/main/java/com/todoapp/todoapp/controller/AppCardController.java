@@ -1,5 +1,6 @@
 package com.todoapp.todoapp.controller;
 
+import com.todoapp.todoapp.customException.InputException;
 import com.todoapp.todoapp.customException.uqualsException;
 import com.todoapp.todoapp.dto.card.AllCardResponseDto;
 import com.todoapp.todoapp.dto.card.CardRequestDto;
@@ -72,7 +73,7 @@ public class AppCardController {
     public ResponseEntity<?> deleteCard(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         try {
-            appCardService.deleteCard(id,userDetails.getUser());
+            appCardService.deleteCard(id, userDetails.getUser());
             return ResponseEntity.ok().body(String.format("Pk%d번 앱카드 삭제 완료", id));
         } catch (uqualsException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
@@ -82,13 +83,15 @@ public class AppCardController {
     }
 
 
-    @GetMapping("/appcard/finish")
-    private ResponseEntity<?>  finishCheck(@RequestParam int checkNum, Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    @PutMapping("/appcard/finish")
+    private ResponseEntity<?> finishCheck(@RequestParam ("cardid")Long cardId,@RequestParam  ("cheknum") int checkNum, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         try {
-            appCardService.finishCheck(checkNum, id,userDetails.getUser());
+            appCardService.finishCheck(cardId, checkNum, userDetails.getUser());
             return ResponseEntity.ok().body("앱카드 체크 처리 완료");
         } catch (uqualsException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        } catch (InputException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }

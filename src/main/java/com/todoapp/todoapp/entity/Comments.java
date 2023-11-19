@@ -1,11 +1,9 @@
 package com.todoapp.todoapp.entity;
 
 import com.todoapp.todoapp.dto.comment.CommentRequestDto;
-import com.todoapp.todoapp.dto.comment.CommentResponseDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Table(name = "comments")
 @NoArgsConstructor
@@ -30,8 +28,10 @@ public class Comments extends Timestamped {
     @JoinColumn(name = "card_id")
     private Card card;
 
-    public Comments(CommentRequestDto requestDto) {
+    public Comments(CommentRequestDto requestDto, Card card) {
         this.comment = requestDto.getComment();
+        this.card = card;
+        this.user = card.getUser();
     }
 
     public void update(CommentRequestDto requestDto) {

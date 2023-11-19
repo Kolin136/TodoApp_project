@@ -14,6 +14,7 @@ public class CommentResponseDto {
 
     public CommentResponseDto(Comments comments) { //name은 나중 로그인 구현후 토큰을 통해서
         this.id = comments.getId();
+        this.username = comments.getUser().getUsername();
         this.comment = comments.getComment();
         this.createAt = comments.getCreateAt();
     }

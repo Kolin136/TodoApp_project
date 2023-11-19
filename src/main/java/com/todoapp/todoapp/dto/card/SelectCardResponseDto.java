@@ -15,9 +15,9 @@ public class SelectCardResponseDto {
     private String contents;
     private LocalDateTime createAt;
 
-    public SelectCardResponseDto(Card card, String name) {
+    public SelectCardResponseDto(Card card) {
         this.id = card.getId();
-        this.username = name;
+        this.username = card.getUser().getUsername();
         this.title = card.getTitle();
         this.contents = card.getContents();
         this.createAt = card.getCreateAt();

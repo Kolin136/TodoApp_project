@@ -35,7 +35,7 @@ public class Card extends Timestamped {
     private User user;
 
     //게시글이랑 댓글의 관계-> 게시글은 댓글과의 관계에서 주인이 아니고(1)
-    @OneToMany(mappedBy = "card")
+    @OneToMany(mappedBy = "card",fetch = FetchType.EAGER)
     private List<Comments> commentsList = new ArrayList<>();
 
 
@@ -55,6 +55,10 @@ public class Card extends Timestamped {
 
     public void finishChange(int check) {
         this.finish = check;
+    }
+
+    public void commentsListAdd(Comments comments){
+        this.commentsList.add(comments);
     }
 
 }

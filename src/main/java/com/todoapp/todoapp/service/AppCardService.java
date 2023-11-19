@@ -1,5 +1,6 @@
 package com.todoapp.todoapp.service;
 
+import com.todoapp.todoapp.customException.InputException;
 import com.todoapp.todoapp.customException.uqualsException;
 import com.todoapp.todoapp.dto.card.AllCardResponseDto;
 import com.todoapp.todoapp.dto.card.CardRequestDto;
@@ -25,7 +26,7 @@ public class AppCardService {
         Card card = new Card(requestDto, user);
         user.cardListAdd(card);
 
-        SelectCardResponseDto cardResponseDto = new SelectCardResponseDto(cardRepository.save(card), user.getUsername());
+        SelectCardResponseDto cardResponseDto = new SelectCardResponseDto(cardRepository.save(card));
 
         return cardResponseDto;
     }
@@ -34,7 +35,7 @@ public class AppCardService {
     public SelectCardResponseDto getIdCard(Long id) {
         Card card = findCard(id);
 
-        SelectCardResponseDto cardResponseDto = new SelectCardResponseDto(card, card.getUser().getUsername());
+        SelectCardResponseDto cardResponseDto = new SelectCardResponseDto(card);
 
         return cardResponseDto;
     }
@@ -54,7 +55,7 @@ public class AppCardService {
 
         card.update(requestDto);
 
-        return new SelectCardResponseDto(card, card.getUser().getUsername());
+        return new SelectCardResponseDto(card);
     }
 
     public void deleteCard(Long id, User user) throws uqualsException{
@@ -68,14 +69,18 @@ public class AppCardService {
 
     }
 
-    public void finishCheck(int checkNum, Long id, User user) throws uqualsException{
-        Card card = findCard(id);
+    public void finishCheck(Long cardId, int checkNum, User user) throws uqualsException,InputException{
+        Card card = findCard(cardId);
 
         if (!card.getUser().getUsername().equals(user.getUsername())){
             throw new uqualsException();
         }
 
-        card.setFinish(1);
+        if (checkNum != 1){
+            throw new InputException();
+        }
+
+        card.finishChange(1);
 
     }
 
