@@ -30,8 +30,14 @@ public class AppCardController {
     }
 
     @GetMapping("/appcard/{id}")
-    public SelectCardResponseDto getIdCard(@PathVariable Long id){
-        return appCardService.getIdCard(id);
+    public ResponseEntity<?> getIdCard(@PathVariable Long id){
+
+        try {
+            SelectCardResponseDto selectCardResponseDto = appCardService.getIdCard(id);
+            return ResponseEntity.ok(selectCardResponseDto);
+        } catch (RuntimeException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     @GetMapping("/appcard")
@@ -46,9 +52,9 @@ public class AppCardController {
             return ResponseEntity.ok(selectCardResponseDto);
 
         } catch (uqualsException e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("다른 유저의 게시글 입니다.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("다른 유저의 앱카드 입니다.");
         }catch (RuntimeException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 게시글은 존재하지 않습니다.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 앱카드 존재하지 않습니다.");
         }
 
 

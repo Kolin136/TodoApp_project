@@ -71,7 +71,7 @@ public class AppCardService {
 
     private Card findCard(Long id) {
         return cardRepository.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("해당 카드는 없습니다")
+                new IllegalArgumentException("해당 앱카드는 없습니다")
         );
     }
 

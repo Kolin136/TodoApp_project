@@ -36,27 +36,46 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         String tokenValue = jwtUtil.getJWtHeader(req);
 
 
-        if (!StringUtils.hasText(tokenValue) || !jwtUtil.validateToken(tokenValue)) {
-            log.error("Token Error");
-            res.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 상태 보내기
+//        if (!StringUtils.hasText(tokenValue) || !jwtUtil.validateToken(tokenValue)) {
+//            log.error("Token Error");
+//            res.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 상태 보내기
+//            res.setContentType("application/json");
+//            res.setCharacterEncoding("utf-8");
+//            PrintWriter writer = res.getWriter();
+//            writer.println("토큰이 유효하지 않습니다.");
+//            return;
+//        }
+        if (StringUtils.hasText(tokenValue)){
+
+            if (!jwtUtil.validateToken(tokenValue)) {
+                log.error("Token Error");
+                res.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 상태 보내기
+                res.setContentType("application/json");
+                res.setCharacterEncoding("utf-8");
+                PrintWriter writer = res.getWriter();
+                writer.println("토큰이 유효하지 않습니다.");
+                return;
+            }
+
+            Claims info = jwtUtil.getUserInfoFromToken(tokenValue);
+
+            //info.getSubject()는 인증 단계에서 토큰 생성할때 넣은 username 가져온다.
+            try {
+                setAuthentication(info.getSubject());
+                log.info("인가 시작");
+            } catch (Exception e) {
+                log.error(e.getMessage());
+                return;
+            }
+        }
+        else {
+            log.info("Token null");
             res.setContentType("application/json");
             res.setCharacterEncoding("utf-8");
             PrintWriter writer = res.getWriter();
-            writer.println("토큰이 유효하지 않습니다.");
-            return;
+            writer.println("헤더에 토큰을 넣어주시고 로그인 하거나 로그인을 먼저 해주세요.");
+
         }
-
-        Claims info = jwtUtil.getUserInfoFromToken(tokenValue);
-
-        //info.getSubject()는 인증 단계에서 토큰 생성할때 넣은 username 가져온다.
-        try {
-            setAuthentication(info.getSubject());
-            log.info("인가 시작");
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return;
-        }
-
 
         filterChain.doFilter(req, res);
     }
