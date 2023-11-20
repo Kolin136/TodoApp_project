@@ -1,11 +1,11 @@
 # TodoApp_project
- 테스트 할시 application.properties에 ↓ 추가
-spring.datasource.url=jdbc:mysql://localhost:3306/shop
-spring.datasource.username= {mysql 유저이름}
-spring.datasource.password= {비밀번호}
-spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
-spring.jpa.hibernate.ddl-auto=update
-jwt.secret.key= {Base64 Encode 한 SecretKey}
+ 테스트 할시 application.properties에 ↓ 추가 <br/>
+spring.datasource.url=jdbc:mysql://localhost:3306/shop<br/>
+spring.datasource.username={mysql 유저이름}<br/>
+spring.datasource.password={비밀번호}<br/>
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver<br/>
+spring.jpa.hibernate.ddl-auto=update<br/>
+jwt.secret.key= {Base64 Encode 한 SecretKey}<br/>
 
 # 프로젝트 요구 사항
 - [ ]  **🆕 회원 가입 API** 
