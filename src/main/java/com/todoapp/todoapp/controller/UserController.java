@@ -32,6 +32,7 @@ public class UserController {
         }
 
         try {
+            System.out.println("시작작");
             userService.signup(requestDto);
             String message = "회원가입 성공";
             //return ResponseEntity.status(HttpStatus.OK).body(message);  정답은 없지만 new 방식 아닐경우
