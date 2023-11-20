@@ -1,6 +1,6 @@
 # TodoApp_project
  테스트 할시 application.properties에 ↓ 추가 <br/>
-spring.datasource.url=jdbc:mysql://localhost:3306/shop<br/>
+spring.datasource.url=jdbc:mysql://localhost:3306/{DB이름}<br/>
 spring.datasource.username={mysql 유저이름}<br/>
 spring.datasource.password={비밀번호}<br/>
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver<br/>
