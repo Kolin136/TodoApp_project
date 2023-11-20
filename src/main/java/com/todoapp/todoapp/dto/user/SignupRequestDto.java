@@ -15,7 +15,7 @@ public class SignupRequestDto {
     @NotBlank
     private String username;
 
-
+    // 현재 시간이 모잘라서 꼭 대문자 or 숫자 포함등은 해결 못 했습니다.
     @Pattern(regexp ="[a-zA-Z0-9]*$",message ="비밀번호 허용 문자에 맞게 해주세요")
     @Size(min=8, max=15,message ="8자 이상 15자 이하이어야 합니다")
     @NotBlank
