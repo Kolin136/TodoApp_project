@@ -23,6 +23,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public JwtAuthenticationFilter(JwtUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
         setFilterProcessesUrl("/todo/user/login");  // 클라가 해당 url요청한경우 필터 작동
+
     }
 
 
