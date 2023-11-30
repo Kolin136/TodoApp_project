@@ -25,7 +25,7 @@ public class UserController {
 
     //지금은 리턴쪽 보면 서로 반환이 달라서 ? 맞지만 정해져있을땐 명확하게 무엇을 리턴할건지 ResponseEntity<> 괄호안에 적는게 좋다
     @PostMapping("/user/signup")
-    public ResponseEntity<?>  signup( @RequestBody @Valid SignupRequestDto requestDto, BindingResult bindingResult) {
+    public ResponseEntity<?> signup( @RequestBody @Valid SignupRequestDto requestDto, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getFieldErrors());
