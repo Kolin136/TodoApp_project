@@ -25,8 +25,8 @@ public class AppCardService {
     public SelectCardResponseDto createCard(CardRequestDto requestDto, User user) {
         Card card = new Card(requestDto, user);
         user.cardListAdd(card);
-
-        SelectCardResponseDto cardResponseDto = new SelectCardResponseDto(cardRepository.save(card));
+        cardRepository.save(card);
+        SelectCardResponseDto cardResponseDto = new SelectCardResponseDto(card);
 
         return cardResponseDto;
     }

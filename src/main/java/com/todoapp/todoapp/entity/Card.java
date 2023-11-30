@@ -2,16 +2,14 @@ package com.todoapp.todoapp.entity;
 
 import com.todoapp.todoapp.dto.card.CardRequestDto;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Table(name = "card")
 @NoArgsConstructor
-@Setter
+@AllArgsConstructor
 @Getter
 @Entity
 public class Card extends Timestamped {
@@ -30,13 +28,13 @@ public class Card extends Timestamped {
     private Integer finish;
 
     //유저랑 게시글의 관계-> 게시글이 주인(N)
-    @ManyToOne
+    @ManyToOne //테스트 코드중 문제때문에 cascade 일시설정
     @JoinColumn(name = "user_id")
     private User user;
 
     //게시글이랑 댓글의 관계-> 게시글은 댓글과의 관계에서 주인이 아니고(1)
     @OneToMany(mappedBy = "card",fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
-    private List<Comments> commentsList = new ArrayList<>();
+    private List<Comments> commentsList;
 
 
 
