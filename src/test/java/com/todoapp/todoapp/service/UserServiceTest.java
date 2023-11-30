@@ -54,7 +54,6 @@ class UserServiceTest {
         given(userRepository.findByUsername("kolin136")).willReturn(Optional.of(new User()));
 
         // when,then
-        // 리턴 타입이 void라 오류가 없으면 정상적으로 처리
         Exception exception = assertThrows(IllegalArgumentException.class ,() -> userService.signup(signupRequestDto));
         assertEquals("중복된 username 입니다.",exception.getMessage());
 
