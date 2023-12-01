@@ -4,6 +4,7 @@ import com.todoapp.todoapp.config.WebSecurityConfig;
 import com.todoapp.todoapp.dto.card.AllCardResponseDto;
 import com.todoapp.todoapp.dto.card.CardRequestDto;
 import com.todoapp.todoapp.dto.card.SelectCardResponseDto;
+import com.todoapp.todoapp.entity.User;
 import com.todoapp.todoapp.service.AppCardService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -13,6 +14,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.nio.charset.StandardCharsets;
@@ -23,7 +25,6 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -74,14 +75,14 @@ class AppCardControllerTest extends SettingMvc {
         // given
         SelectCardResponseDto responseDto = new SelectCardResponseDto(1L, "seok", "제목", "내용", null);
 
-        // when
         given(appCardService.getIdCard(1L)).willReturn(responseDto);
 
-        // then
+        // when,then
         mvc.perform(get("/todo/appcard/1")
                         .accept(MediaType.APPLICATION_JSON)
                         .principal(mockPrincipal))
                 .andExpect(status().isOk())
+//                .andDo(MockMvcResultHandlers.print());
                 .andExpect(jsonPath("$.username").value(responseDto.getUsername()))
                 .andExpect(jsonPath("$.title").value(responseDto.getTitle()))
                 .andExpect(jsonPath("$.contents").value(responseDto.getContents()));
@@ -97,10 +98,9 @@ class AppCardControllerTest extends SettingMvc {
                 new AllCardResponseDto(3L, "seok", "제목3", "내용3", null, 0)
         ));
 
-        // when
         given(appCardService.getCards()).willReturn(dtoList);
 
-        // then
+        // when,then
         mvc.perform(get("/todo/appcard")
                         .accept(MediaType.APPLICATION_JSON)
                         .principal(mockPrincipal))
@@ -120,12 +120,12 @@ class AppCardControllerTest extends SettingMvc {
 
         String dtoJson = objectMapper.writeValueAsString(requestDto);
 
-        // when
+
         // 첫번째 매개변수 Long타입값 넣는거에서 any()말고 1L적으면 왜 목이 아닌 실제 서비스 돌아가서 오류 나는지 모르겠습니다.
         // 근데 또 이상하게 "특정 할일 카드 조회" 테스트쪽은 1L적어도 오류없이 정상적으로 돌아가는지... 버그가 있는건지 이상합니다
         given(appCardService.updateCard(any(), any(), any())).willReturn(responseDto);
 
-        // then
+        // when,then
         mvc.perform(put("/todo/appcard/1")
                         .content(dtoJson)
                         .contentType(new MediaType(MediaType.APPLICATION_JSON, StandardCharsets.UTF_8))
@@ -142,7 +142,7 @@ class AppCardControllerTest extends SettingMvc {
     @DisplayName("할일 카드 삭제")
     void deleteCard() throws Exception{
         // given
-        String ResponseEntityMessage = "Pk1번 앱카드 삭제 완료";
+        String ResponseEntityMessage = "Pk 1번 앱카드 삭제 완료";
 
         // when,then
         mvc.perform(delete("/todo/appcard/1")

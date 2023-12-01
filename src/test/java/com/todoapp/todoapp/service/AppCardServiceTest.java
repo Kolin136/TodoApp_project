@@ -28,11 +28,8 @@ import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 class AppCardServiceTest {
-
-
     @Mock
     CardRepository cardRepository;
-
     @InjectMocks
     AppCardService appCardService;
 

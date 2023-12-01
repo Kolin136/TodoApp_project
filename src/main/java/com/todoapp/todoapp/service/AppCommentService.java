@@ -26,7 +26,8 @@ public class AppCommentService {
         card.commentsListAdd(comments);
         user.commentsListAdd(comments);
 
-        CommentResponseDto commentResponseDto = new CommentResponseDto(commentRepository.save(comments));
+        commentRepository.save(comments);
+        CommentResponseDto commentResponseDto = new CommentResponseDto(comments);
 
         return commentResponseDto;
     }

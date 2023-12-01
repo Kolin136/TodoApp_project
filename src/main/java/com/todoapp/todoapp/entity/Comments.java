@@ -2,11 +2,13 @@ package com.todoapp.todoapp.entity;
 
 import com.todoapp.todoapp.dto.comment.CommentRequestDto;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Table(name = "comments")
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Entity
 public class Comments extends Timestamped {

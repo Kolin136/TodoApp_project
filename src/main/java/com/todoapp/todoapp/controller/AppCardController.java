@@ -72,7 +72,7 @@ public class AppCardController {
 
         try {
             appCardService.deleteCard(id, userDetails.getUser());
-            return ResponseEntity.ok().body(String.format("Pk%d번 앱카드 삭제 완료", id));
+            return ResponseEntity.ok().body(String.format("Pk %d번 앱카드 삭제 완료", id));
         } catch (uqualsException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         } catch (RuntimeException e) {
