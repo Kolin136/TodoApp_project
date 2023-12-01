@@ -2,11 +2,13 @@ package com.todoapp.todoapp.dto.card;
 
 import com.todoapp.todoapp.entity.Card;
 import com.todoapp.todoapp.entity.User;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Getter
+@AllArgsConstructor
 public class SelectCardResponseDto {
 
     private Long id;
