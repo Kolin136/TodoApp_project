@@ -32,10 +32,13 @@ public class AppCommentService {
         return commentResponseDto;
     }
 
-    public CommentResponseDto updateComment(Long cardid, Long commentid, CommentRequestDto requestDto, User user) {
-        Card card = findCard(cardid);
-
+    public CommentResponseDto updateComment(Long cardid, Long commentid, CommentRequestDto requestDto, User user) throws uqualsException {
         Comments comments = findComment(commentid);
+
+        if(!comments.getUser().getUsername().equals(user.getUsername())){
+            throw new uqualsException();
+        }
+
         comments.update(requestDto);
 
 //        이렇게 댓글을 수정후 체크해보는데 카드입장에서는 바로 즉시 수정한게 반영되는데 유저입장도 수정된게 반영되긴하나 카드처럼 즉시는 안됩니다.
@@ -48,6 +51,7 @@ public class AppCommentService {
 //        유저입장체크 Hi수정
 //        유저입장체크 oh수정
 
+//        Card card = findCard(cardid);
 //        for (Comments comments1 : card.getCommentsList()) {
 //            System.out.println("카드입장체크" + comments1.getComment());
 //        }

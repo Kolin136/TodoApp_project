@@ -32,7 +32,7 @@ public class AppcommentController {
     public ResponseEntity<?> updateComment(@RequestParam ("cardid")Long cardId,
                                             @RequestParam ("commentid") Long commentId,
                                             @RequestBody CommentRequestDto requestDto,
-                                            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+                                            @AuthenticationPrincipal UserDetailsImpl userDetails) throws uqualsException{
         try {
             CommentResponseDto commentResponseDto = appCommentService.updateComment(cardId,commentId ,requestDto, userDetails.getUser());
             return ResponseEntity.ok(commentResponseDto);
