@@ -21,12 +21,12 @@ public class Comments extends Timestamped {
     private String comment;
 
     //유저랑 댓글의 관계-> 댓글이 주인(N)
-    @ManyToOne(cascade = CascadeType.ALL)  //테스트 코드중 문제때문에 cascade 일시설정
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user = new User();
 
     //게시글이랑 댓글의 관계-> 댓글이 주인(N)
-    @ManyToOne(cascade = CascadeType.ALL)   //테스트 코드중 문제때문에 cascade 일시설정
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "card_id")
     private Card card = new Card();
 

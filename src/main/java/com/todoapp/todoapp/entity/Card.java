@@ -12,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Entity
+@Builder
 public class Card extends Timestamped {
 
     @Id
@@ -28,7 +29,7 @@ public class Card extends Timestamped {
     private Integer finish;
 
     //유저랑 게시글의 관계-> 게시글이 주인(N)
-    @ManyToOne //테스트 코드중 문제때문에 cascade 일시설정
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
