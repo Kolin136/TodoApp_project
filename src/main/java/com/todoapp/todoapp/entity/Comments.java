@@ -23,12 +23,12 @@ public class Comments extends Timestamped {
     //유저랑 댓글의 관계-> 댓글이 주인(N)
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    private User user = new User();
+    private User user;
 
     //게시글이랑 댓글의 관계-> 댓글이 주인(N)
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "card_id")
-    private Card card = new Card();
+    private Card card;
 
     public Comments(CommentRequestDto requestDto, Card card) {
         this.comment = requestDto.getComment();
