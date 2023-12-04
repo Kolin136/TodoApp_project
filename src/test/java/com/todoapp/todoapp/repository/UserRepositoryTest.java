@@ -14,42 +14,43 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
 class UserRepositoryTest {
 
-    @Autowired
-    UserRepository userRepository;
+  @Autowired
+  UserRepository userRepository;
 
-    @Test
-    @DisplayName("유저 저장")
-    void saveUser() {
-        // given
-        User user = new User("seok", "qwer");
+  @Test
+  @DisplayName("유저 저장")
+  void saveUser() {
+    // given
+    User user = new User("seok", "qwer");
 
-        // when
-        User saveUser = userRepository.save(user);
+    // when
+    User saveUser = userRepository.save(user);
 
-        // then
-        assertNotNull(saveUser);
-        assertEquals(1L, saveUser.getId());
-        assertEquals("seok", saveUser.getUsername());
-        assertEquals("qwer", saveUser.getPassword());
+    // then
+    assertNotNull(saveUser);
+    assertEquals(1L, saveUser.getId());
+    assertEquals("seok", saveUser.getUsername());
+    assertEquals("qwer", saveUser.getPassword());
 
-    }
+  }
 
-    @Test
-    @DisplayName("유저 이름 검색으로 가져오기")
-    void findUsername() {
-        // given
-        User user = new User("seok", "qwer");
+  @Test
+  @DisplayName("유저 이름 검색으로 가져오기")
+  void findUsername() {
+    // given
+    User user = new User("seok", "qwer");
 
-        userRepository.save(user);
+    userRepository.save(user);
 
-        // when
-        User findUser = userRepository.findByUsername("seok").orElseThrow();
-        Exception exception = assertThrows(NoSuchElementException.class, () -> userRepository.findByUsername("jae").orElseThrow());
+    // when
+    User findUser = userRepository.findByUsername("seok").orElseThrow();
+    Exception exception = assertThrows(NoSuchElementException.class,
+        () -> userRepository.findByUsername("jae").orElseThrow());
 
-        // then
-        assertEquals("seok", findUser.getUsername());
-        assertNotNull(exception);
+    // then
+    assertEquals("seok", findUser.getUsername());
+    assertNotNull(exception);
 
-    }
+  }
 
 }

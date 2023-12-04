@@ -66,6 +66,11 @@ public class AppCardController {
         }
     }
 
+    
+
+
+
+
 
     @DeleteMapping("/appcard/{id}")
     public ResponseEntity<?> deleteCard(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
