@@ -1,6 +1,6 @@
 package com.todoapp.todoapp.service;
 
-import com.todoapp.todoapp.customException.uqualsException;
+import com.todoapp.todoapp.oldCustomException.uqualsException;
 import com.todoapp.todoapp.dto.comment.CommentRequestDto;
 import com.todoapp.todoapp.dto.comment.CommentResponseDto;
 import com.todoapp.todoapp.entity.Card;
