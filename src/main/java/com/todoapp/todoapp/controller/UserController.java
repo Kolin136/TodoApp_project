@@ -17,31 +17,28 @@ import java.util.List;
 @RestController
 public class UserController {
 
-    private final UserService userService;
+  private final UserService userService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+  public UserController(UserService userService) {
+    this.userService = userService;
+  }
 
-    //지금은 리턴쪽 보면 서로 반환이 달라서 ? 맞지만 정해져있을땐 명확하게 무엇을 리턴할건지 ResponseEntity<> 괄호안에 적는게 좋다
-    @PostMapping("/user/signup")
-    public ResponseEntity<?> signup( @RequestBody @Valid SignupRequestDto requestDto, BindingResult bindingResult) {
+  //지금은 리턴쪽 보면 서로 반환이 달라서 ? 맞지만 정해져있을땐 명확하게 무엇을 리턴할건지 ResponseEntity<> 괄호안에 적는게 좋다
+  @PostMapping("/user/signup")
+  public ResponseEntity<?> signup(@Valid  @RequestBody SignupRequestDto requestDto
+      ) {
 
-        if (bindingResult.hasErrors()){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getFieldErrors());
-        }
+//    if (bindingResult.hasErrors()) {
+//      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getFieldErrors());
+//    }
 
-        try {
-            System.out.println("시작작");
-            userService.signup(requestDto);
-            String message = "회원가입 성공";
-            //return ResponseEntity.status(HttpStatus.OK).body(message);  정답은 없지만 new 방식 아닐경우
-            return new ResponseEntity<>(message, HttpStatus.OK);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+    userService.signup(requestDto);
+    String message = "회원가입 성공";
+    //return ResponseEntity.status(HttpStatus.OK).body(message);  정답은 없지만 new 방식 아닐경우
+    return new ResponseEntity<>(message, HttpStatus.OK);
 
-    }
+
+  }
 
 
 }

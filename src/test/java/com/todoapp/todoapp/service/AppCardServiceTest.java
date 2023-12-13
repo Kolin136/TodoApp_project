@@ -1,7 +1,7 @@
 package com.todoapp.todoapp.service;
 
-import com.todoapp.todoapp.customException.InputException;
-import com.todoapp.todoapp.customException.uqualsException;
+import com.todoapp.todoapp.oldCustomException.InputException;
+import com.todoapp.todoapp.oldCustomException.uqualsException;
 import com.todoapp.todoapp.dto.card.AllCardResponseDto;
 import com.todoapp.todoapp.dto.card.CardRequestDto;
 import com.todoapp.todoapp.dto.card.SelectCardResponseDto;
@@ -14,7 +14,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

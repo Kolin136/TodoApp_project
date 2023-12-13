@@ -1,14 +1,14 @@
 package com.todoapp.todoapp.service;
 
-import com.todoapp.todoapp.customException.InputException;
-import com.todoapp.todoapp.customException.uqualsException;
 import com.todoapp.todoapp.dto.card.AllCardResponseDto;
 import com.todoapp.todoapp.dto.card.CardRequestDto;
 import com.todoapp.todoapp.dto.card.SelectCardResponseDto;
 import com.todoapp.todoapp.entity.Card;
 import com.todoapp.todoapp.entity.User;
+import com.todoapp.todoapp.exception.BusinessException;
+import com.todoapp.todoapp.exception.CustomException;
+import com.todoapp.todoapp.exception.ErrorCode;
 import com.todoapp.todoapp.repository.CardRepository;
-import com.todoapp.todoapp.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,11 +46,11 @@ public class AppCardService {
                 .stream().map(AllCardResponseDto::new).toList();
     }
 
-    public SelectCardResponseDto updateCard(Long id, CardRequestDto requestDto, User user) throws uqualsException {
+    public SelectCardResponseDto updateCard(Long id, CardRequestDto requestDto, User user) {
         Card card = findCard(id);
 
         if (!card.getUser().getUsername().equals(user.getUsername())){
-            throw new uqualsException();
+            throw new CustomException(ErrorCode.NOT_USER_OWNED_POST_EXCEPTION);
         }
 
         card.update(requestDto);
@@ -58,26 +58,26 @@ public class AppCardService {
         return new SelectCardResponseDto(card);
     }
 
-    public void deleteCard(Long id, User user) throws uqualsException{
+    public void deleteCard(Long id, User user) {
         Card card = findCard(id);
 
         if (!card.getUser().getUsername().equals(user.getUsername())){
-            throw new uqualsException();
+            throw new CustomException(ErrorCode.NOT_USER_OWNED_POST_EXCEPTION);
         }
 
         cardRepository.delete(card);
 
     }
 
-    public void finishCheck(Long cardId, int checkNum, User user) throws uqualsException,InputException{
+    public void finishCheck(Long cardId, int checkNum, User user) {
         Card card = findCard(cardId);
 
         if (!card.getUser().getUsername().equals(user.getUsername())){
-            throw new uqualsException();
+            throw new CustomException(ErrorCode.NOT_USER_OWNED_POST_EXCEPTION);
         }
 
         if (checkNum != 1){
-            throw new InputException();
+            throw new CustomException(ErrorCode.INVALID_INPUT_EXCEPTION);
         }
 
         card.finishChange(1);
@@ -86,7 +86,7 @@ public class AppCardService {
 
     private Card findCard(Long id) {
         return cardRepository.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("해당 앱카드는 없습니다")
+             new BusinessException(ErrorCode.NOT_FOUND_APPCARD_EXCEPTION)
         );
     }
 

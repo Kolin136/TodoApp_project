@@ -1,11 +1,13 @@
 package com.todoapp.todoapp.service;
 
-import com.todoapp.todoapp.customException.uqualsException;
 import com.todoapp.todoapp.dto.comment.CommentRequestDto;
 import com.todoapp.todoapp.dto.comment.CommentResponseDto;
 import com.todoapp.todoapp.entity.Card;
 import com.todoapp.todoapp.entity.Comments;
 import com.todoapp.todoapp.entity.User;
+import com.todoapp.todoapp.exception.BusinessException;
+import com.todoapp.todoapp.exception.CustomException;
+import com.todoapp.todoapp.exception.ErrorCode;
 import com.todoapp.todoapp.repository.CardRepository;
 import com.todoapp.todoapp.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,11 +34,11 @@ public class AppCommentService {
         return commentResponseDto;
     }
 
-    public CommentResponseDto updateComment(Long cardid, Long commentid, CommentRequestDto requestDto, User user) throws uqualsException {
+    public CommentResponseDto updateComment(Long cardid, Long commentid, CommentRequestDto requestDto, User user)  {
         Comments comments = findComment(commentid);
 
         if(!comments.getUser().getUsername().equals(user.getUsername())){
-            throw new uqualsException();
+            throw new CustomException(ErrorCode.NOT_USER_OWNED_POST_EXCEPTION);
         }
 
         comments.update(requestDto);
@@ -62,11 +64,11 @@ public class AppCommentService {
         return new CommentResponseDto(comments);
     }
 
-    public void deleteComment(Long id, User user) throws uqualsException {
+    public void deleteComment(Long id, User user) {
         Comments comments = findComment(id);
 
         if(!comments.getUser().getUsername().equals(user.getUsername())){
-            throw new uqualsException();
+            throw new CustomException(ErrorCode.NOT_USER_OWNED_POST_EXCEPTION);
         }
 
         commentRepository.delete(comments);
@@ -75,13 +77,13 @@ public class AppCommentService {
 
     private Comments findComment(Long id) {
         return commentRepository.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("해당 댓글은 없습니다")
+            new BusinessException(ErrorCode.NOT_FOUND_APPCOMMENT_EXCEPTION)
         );
     }
 
     private Card findCard(Long id) {
         return cardRepository.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("해당 앱카드는 없습니다")
+            new BusinessException(ErrorCode.NOT_FOUND_APPCARD_EXCEPTION)
         );
     }
 

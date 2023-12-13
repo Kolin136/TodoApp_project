@@ -1,4 +1,4 @@
-package com.todoapp.todoapp.customException;
+package com.todoapp.todoapp.oldCustomException;
 
 public class InputException extends Exception {
     public InputException() {

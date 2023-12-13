@@ -1,4 +1,4 @@
-package com.todoapp.todoapp.customException;
+package com.todoapp.todoapp.oldCustomException;
 
 public class uqualsException extends Exception {
     public uqualsException(){
