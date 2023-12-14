@@ -7,6 +7,7 @@ public enum ErrorCode {
   // 공통
   INVALID_INPUT_EXCEPTION(400,"잘못된 입력 입니다!,앱카드 완료 처리 하신다면 1 입력해주세요"),
   NOT_USER_OWNED_POST_EXCEPTION(403,"해당글은 해당 유저의 글이 아닙니다."),
+  DAILY_REQUEST_LIMIT_EXCEEDED(429,"일일 사용 횟수 초과 했습니다"),
 
   // 앱카드
   NOT_FOUND_APPCARD_EXCEPTION(400,"해당 앱카드는 없습니다"),
