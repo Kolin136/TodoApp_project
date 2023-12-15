@@ -9,7 +9,14 @@ import com.todoapp.todoapp.exception.BusinessException;
 import com.todoapp.todoapp.exception.CustomException;
 import com.todoapp.todoapp.exception.ErrorCode;
 import com.todoapp.todoapp.repository.CardRepository;
+import com.todoapp.todoapp.repository.UserRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,8 +28,12 @@ import java.util.List;
 public class AppCardService {
 
     private final CardRepository cardRepository;
+    private final UserRepository userRepository;
 
-    public SelectCardResponseDto createCard(CardRequestDto requestDto, User user) {
+    public SelectCardResponseDto createCard(CardRequestDto requestDto, Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() ->
+            new BusinessException(ErrorCode.NOT_FOUND_USER_EXCEPTION)
+        );
         Card card = new Card(requestDto, user);
         user.cardListAdd(card);
         cardRepository.save(card);
@@ -41,9 +52,14 @@ public class AppCardService {
     }
 
     @Transactional(readOnly = true)
-    public List<AllCardResponseDto> getCards() {
-        return cardRepository.findAllByOrderByUserUsernameAscCreateAtDesc()
-                .stream().map(AllCardResponseDto::new).toList();
+    public Page<AllCardResponseDto> getCards(int page, int size, String sortBy, boolean isAsc) {
+        Sort.Direction direction = isAsc ? Direction.ASC : Direction.DESC;
+        Sort sort = Sort.by(direction,sortBy);
+        Pageable pageable = PageRequest.of(page,size,sort);
+
+        Page<Card> cardList = cardRepository.findAll(pageable);
+
+        return cardList.map(AllCardResponseDto::new);
     }
 
     public SelectCardResponseDto updateCard(Long id, CardRequestDto requestDto, User user) {

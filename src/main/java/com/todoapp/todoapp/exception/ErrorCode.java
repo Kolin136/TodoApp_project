@@ -16,7 +16,8 @@ public enum ErrorCode {
   NOT_FOUND_APPCOMMENT_EXCEPTION(400,"해당 댓글은 없습니다"),
 
   // 회원
-  ALREADY_EXIST_USER_NAME_EXCEPTION(409, "이미 존재하는 이름입니다.");
+  ALREADY_EXIST_USER_NAME_EXCEPTION(409, "이미 존재하는 이름입니다."),
+  NOT_FOUND_USER_EXCEPTION(400,"해당 유저는 없습니다.");
 
   private final int status;
 

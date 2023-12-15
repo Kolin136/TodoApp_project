@@ -110,7 +110,8 @@ class AppCardServiceTest {
             given(cardRepository.findAllByOrderByUserUsernameAscCreateAtDesc()).willReturn(checkCardList);
 
             // when
-            List<AllCardResponseDto> responseDtos = appCardService.getCards();
+            List<AllCardResponseDto> responseDtos = appCardService.getCards(page - 1, size, sortBy,
+                isAsc);
 
             // then
             assertEquals(checkCardList.size(), responseDtos.size());
