@@ -7,6 +7,7 @@ import com.todoapp.todoapp.security.UserDetailsImpl;
 import com.todoapp.todoapp.service.AppCardService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,7 +33,7 @@ public class AppCardController {
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
     SelectCardResponseDto selectCardResponseDto = appCardService.createCard(requestDto,
-        userDetails.getUser());
+        userDetails.getUser().getId());
 
     return ResponseEntity.ok(selectCardResponseDto);
   }
@@ -48,9 +49,13 @@ public class AppCardController {
 
 
   @GetMapping("/appcard")
-  public ResponseEntity<List<AllCardResponseDto>> getCards() {
+  public ResponseEntity<Page<AllCardResponseDto>> getCards(
+      @RequestParam("page") int page,
+      @RequestParam("size") int size,
+      @RequestParam("sortBy") String sortBy,
+      @RequestParam("isAsc") boolean isAsc) {
 
-    List<AllCardResponseDto> allCardResponseDtoList = appCardService.getCards();
+    Page<AllCardResponseDto> allCardResponseDtoList = appCardService.getCards(page-1,size,sortBy,isAsc);
 
     return ResponseEntity.ok(allCardResponseDtoList);
   }

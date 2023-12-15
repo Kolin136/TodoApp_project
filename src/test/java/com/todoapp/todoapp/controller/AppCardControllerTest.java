@@ -4,7 +4,6 @@ import com.todoapp.todoapp.config.WebSecurityConfig;
 import com.todoapp.todoapp.dto.card.AllCardResponseDto;
 import com.todoapp.todoapp.dto.card.CardRequestDto;
 import com.todoapp.todoapp.dto.card.SelectCardResponseDto;
-import com.todoapp.todoapp.entity.User;
 import com.todoapp.todoapp.service.AppCardService;
 import org.junit.jupiter.api.*;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -12,7 +11,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.nio.charset.StandardCharsets;
@@ -104,7 +102,7 @@ class AppCardControllerTest extends SettingMvc {
                     new AllCardResponseDto(3L, "seok", "제목3", "내용3", null, 0)
             ));
 
-            given(appCardService.getCards()).willReturn(dtoList);
+            given(appCardService.getCards(page - 1, size, sortBy, isAsc)).willReturn(dtoList);
 
             // when,then
             mvc.perform(get("/todo/appcard")
